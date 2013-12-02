@@ -17,29 +17,12 @@ namespace StartupSelector
             public string Name { get; set; }
             [XmlElement("path")]
             public string Path { get; set; }
+            [XmlElement("selected")]
+            public bool Selected { get; set; }
 
             public override string ToString()
             {
                 return Name;
-            }
-        }
-
-        public class Profile
-        {
-            [XmlElement("name")]
-            public string Name { get; set; }
-            [XmlArray("active")]
-            [XmlArrayItem("name")]
-            public List<string> Active { get; set; }
-
-            public override string ToString()
-            {
-                return Name;
-            }
-
-            public Profile()
-            {
-                Active = new List<string>();
             }
         }
 
@@ -52,17 +35,10 @@ namespace StartupSelector
         [XmlArray("programs")]
         [XmlArrayItem("program")]
         public List<Program> Programs { get; set; }
-        [XmlArray("profiles")]
-        [XmlArrayItem("profile")]
-        public List<Profile> Profiles { get; set; }
-        [XmlElement("userSettings")]
-        public Settings UserSettings { get; set; }
 
         public Configuration()
         {
-            Profiles = new List<Profile>();
             Programs = new List<Program>();
-            UserSettings = new Settings();
         }
     }
 }

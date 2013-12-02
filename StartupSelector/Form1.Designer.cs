@@ -1,6 +1,6 @@
 ﻿namespace StartupSelector
 {
-    partial class Form1
+    partial class Startup
     {
         /// <summary>
         /// Required designer variable.
@@ -32,7 +32,6 @@
             this.btnNone = new System.Windows.Forms.Button();
             this.btnSelected = new System.Windows.Forms.Button();
             this.clbPrograms = new System.Windows.Forms.CheckedListBox();
-            this.cbProfiles = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // btnAll
@@ -40,7 +39,7 @@
             this.btnAll.Location = new System.Drawing.Point(13, 240);
             this.btnAll.Name = "btnAll";
             this.btnAll.Size = new System.Drawing.Size(75, 23);
-            this.btnAll.TabIndex = 1;
+            this.btnAll.TabIndex = 2;
             this.btnAll.Text = "All";
             this.btnAll.UseVisualStyleBackColor = true;
             this.btnAll.Click += new System.EventHandler(this.btnAll_Click);
@@ -50,7 +49,7 @@
             this.btnNone.Location = new System.Drawing.Point(94, 240);
             this.btnNone.Name = "btnNone";
             this.btnNone.Size = new System.Drawing.Size(75, 23);
-            this.btnNone.TabIndex = 2;
+            this.btnNone.TabIndex = 3;
             this.btnNone.Text = "None";
             this.btnNone.UseVisualStyleBackColor = true;
             this.btnNone.Click += new System.EventHandler(this.btnNone_Click);
@@ -60,7 +59,7 @@
             this.btnSelected.Location = new System.Drawing.Point(175, 240);
             this.btnSelected.Name = "btnSelected";
             this.btnSelected.Size = new System.Drawing.Size(75, 23);
-            this.btnSelected.TabIndex = 3;
+            this.btnSelected.TabIndex = 1;
             this.btnSelected.Text = "Selected";
             this.btnSelected.UseVisualStyleBackColor = true;
             this.btnSelected.Click += new System.EventHandler(this.btnSelected_Click);
@@ -71,30 +70,23 @@
             this.clbPrograms.FormattingEnabled = true;
             this.clbPrograms.Location = new System.Drawing.Point(13, 13);
             this.clbPrograms.Name = "clbPrograms";
-            this.clbPrograms.Size = new System.Drawing.Size(237, 184);
+            this.clbPrograms.Size = new System.Drawing.Size(237, 214);
             this.clbPrograms.TabIndex = 4;
             // 
-            // cbProfiles
+            // Startup
             // 
-            this.cbProfiles.FormattingEnabled = true;
-            this.cbProfiles.Location = new System.Drawing.Point(12, 213);
-            this.cbProfiles.Name = "cbProfiles";
-            this.cbProfiles.Size = new System.Drawing.Size(237, 21);
-            this.cbProfiles.TabIndex = 5;
-            this.cbProfiles.SelectedValueChanged += new System.EventHandler(this.cbProfiles_SelectedValueChanged);
-            // 
-            // Form1
-            // 
+            this.AcceptButton = this.btnSelected;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnNone;
             this.ClientSize = new System.Drawing.Size(266, 275);
-            this.Controls.Add(this.cbProfiles);
             this.Controls.Add(this.clbPrograms);
             this.Controls.Add(this.btnSelected);
             this.Controls.Add(this.btnNone);
             this.Controls.Add(this.btnAll);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "Startup";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Startup";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.ResumeLayout(false);
 
@@ -106,7 +98,6 @@
         private System.Windows.Forms.Button btnNone;
         private System.Windows.Forms.Button btnSelected;
         private System.Windows.Forms.CheckedListBox clbPrograms;
-        private System.Windows.Forms.ComboBox cbProfiles;
     }
 }
 

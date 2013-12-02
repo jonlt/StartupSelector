@@ -18,32 +18,4 @@
       <path><![CDATA[D:\Dropbox\keepass\KeePass.exe]]></path>
     </program>    
   </programs>
-  <profiles>
-    <profile>
-      <name>Default</name>
-      <active>
-        <name>Skype</name>
-        <name>Lync</name>
-        <name>Dropbox</name>
-      </active>
-    </profile>
-    <profile>
-      <name>Work</name>
-      <active>
-        <name>Skype</name>
-        <name>Lync</name>
-        <name>Sropbox</name>
-      </active>
-    </profile>
-    <profile>
-      <name>Home</name>
-      <active>
-        <name>Skype</name>
-        <name>Dropbox</name>
-      </active>
-    </profile>
-  </profiles>
-  <userSettings>
-    <selectedProfile>Default</selectedProfile>
-  </userSettings>
 </config>

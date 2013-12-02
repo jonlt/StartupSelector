@@ -14,12 +14,12 @@ using StartupSelector.Helpers;
 
 namespace StartupSelector
 {
-    public partial class Form1 : Form
+    public partial class Startup : Form
     {
         private Configuration _configuration;
         private readonly string _configFile = ConfigurationManager.AppSettings["configFile"];
 
-        public Form1()
+        public Startup()
         {
             InitializeComponent();
             LoadConfiguration(_configFile);
@@ -48,54 +48,16 @@ namespace StartupSelector
 
         private void RenderConfiguration()
         {
-            var activeProfile = GetActiveProfile();
-            if (activeProfile == null)
+            clbPrograms.Items.Clear();
+            foreach (var program in _configuration.Programs)
             {
-                activeProfile = new Configuration.Profile()
-                    {
-                        Name = "Default",
-                        Active = new List<string>()
-                    };
-                _configuration.Profiles.Add(activeProfile);
-            }
+                var state = (program.Selected)
+                                ? CheckState.Checked
+                                : CheckState.Unchecked;
 
-            foreach (var profile in _configuration.Profiles)
-            {
-                cbProfiles.Items.Add(profile.Name);
+                clbPrograms.Items.Add(program.Name ?? "", state);
             }
-            cbProfiles.SelectedItem = activeProfile.Name ?? "";
         }
-
-        private Configuration.Profile GetActiveProfile()
-        {
-            // try the combobox
-            if (cbProfiles.SelectedItem != null)
-            {
-                var activeProfileName = cbProfiles.SelectedItem.ToString();
-                if (!string.IsNullOrEmpty(activeProfileName))
-                {
-                    var activeProfile = _configuration.Profiles.SingleOrDefault(p => p.Name == activeProfileName);
-                    if (activeProfile != null)
-                    {
-                        return activeProfile;
-                    }
-                }
-            }
-
-            // try user settings
-            if (_configuration.UserSettings != null && !string.IsNullOrEmpty(_configuration.UserSettings.SelectedProfile))
-            {
-                var activeProfile = _configuration.Profiles.SingleOrDefault(p => p.Name == _configuration.UserSettings.SelectedProfile);
-                if (activeProfile != null)
-                {
-                    return activeProfile;
-                }
-            }
-
-            // take the first (if any)
-            return _configuration.Profiles.FirstOrDefault();
-        }
-
 
         private void btnSelected_Click(object sender, EventArgs e)
         {
@@ -152,30 +114,13 @@ namespace StartupSelector
 
         private void SaveConfiguration(string configurationFile)
         {
+            foreach (var selectedProgram in GetSelectedPrograms())
+            {
+                selectedProgram.Selected = true;
+            }
+
             var xml = Serializer.SerializeXml(_configuration);
             File.WriteAllText(configurationFile, xml, Encoding.UTF8);
-        }
-
-        private void cbProfiles_SelectedValueChanged(object sender, EventArgs e)
-        {
-            var selectedProfileName = ((ComboBox) sender).SelectedItem.ToString();
-            var selectedProfile = _configuration.Profiles.SingleOrDefault(p => p.Name == selectedProfileName);
-            
-            clbPrograms.Items.Clear();
-            foreach (var program in _configuration.Programs)
-            {
-                var state = (selectedProfile.Active.Contains(program.Name))
-                                ? CheckState.Checked
-                                : CheckState.Unchecked;
-
-                clbPrograms.Items.Add(program.Name ?? "", state);
-            }
-
-            if (_configuration.UserSettings == null)
-            {
-                _configuration.UserSettings = new Configuration.Settings();
-            }
-            _configuration.UserSettings.SelectedProfile = selectedProfile.Name;
         }
     }
 }
