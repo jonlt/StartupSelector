@@ -55,10 +55,8 @@ namespace StartupSelector
 
         private void btnSelected_Click(object sender, EventArgs e)
         {
-            foreach (var item in clbPrograms.CheckedItems)
+            foreach (var program in GetSelectedPrograms())
             {
-                var programName = item.ToString();
-                var program = _configuration.Programs.SingleOrDefault(p => p.Name == programName);
                 if (program != null)
                 {
                     StartProgram(program);
@@ -70,10 +68,8 @@ namespace StartupSelector
 
         private void btnAll_Click(object sender, EventArgs e)
         {
-            foreach (var item in clbPrograms.Items)
+            foreach (var program in GetAllPrograms())
             {
-                var programName = item.ToString();
-                var program = _configuration.Programs.SingleOrDefault(p => p.Name == programName);
                 if (program != null)
                 {
                     StartProgram(program);
@@ -91,6 +87,18 @@ namespace StartupSelector
         private void StartProgram(Configuration.Program program)
         {
             Process.Start(program.Path);
+        }
+
+        private IEnumerable<Configuration.Program> GetSelectedPrograms()
+        {
+            return clbPrograms.CheckedItems.OfType<string>()
+                              .Select(s => _configuration.Programs.SingleOrDefault(p => p.Name == s))
+                              .Where(p => p != null);
+        }
+
+        private IEnumerable<Configuration.Program> GetAllPrograms()
+        {
+            return _configuration.Programs;
         }
     }
 }

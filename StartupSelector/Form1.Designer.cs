@@ -32,6 +32,7 @@
             this.btnNone = new System.Windows.Forms.Button();
             this.btnSelected = new System.Windows.Forms.Button();
             this.clbPrograms = new System.Windows.Forms.CheckedListBox();
+            this.cbProfiles = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // btnAll
@@ -69,14 +70,23 @@
             this.clbPrograms.FormattingEnabled = true;
             this.clbPrograms.Location = new System.Drawing.Point(13, 13);
             this.clbPrograms.Name = "clbPrograms";
-            this.clbPrograms.Size = new System.Drawing.Size(237, 214);
+            this.clbPrograms.Size = new System.Drawing.Size(237, 184);
             this.clbPrograms.TabIndex = 4;
+            // 
+            // cbProfiles
+            // 
+            this.cbProfiles.FormattingEnabled = true;
+            this.cbProfiles.Location = new System.Drawing.Point(12, 213);
+            this.cbProfiles.Name = "cbProfiles";
+            this.cbProfiles.Size = new System.Drawing.Size(237, 21);
+            this.cbProfiles.TabIndex = 5;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(266, 275);
+            this.Controls.Add(this.cbProfiles);
             this.Controls.Add(this.clbPrograms);
             this.Controls.Add(this.btnSelected);
             this.Controls.Add(this.btnNone);
@@ -93,6 +103,7 @@
         private System.Windows.Forms.Button btnNone;
         private System.Windows.Forms.Button btnSelected;
         private System.Windows.Forms.CheckedListBox clbPrograms;
+        private System.Windows.Forms.ComboBox cbProfiles;
     }
 }
 
