@@ -43,17 +43,26 @@ namespace StartupSelector
             }
         }
 
+        public class Settings
+        {
+            [XmlElement("selectedProfile")]
+            public string SelectedProfile { get; set; }
+        }
+
         [XmlArray("programs")]
         [XmlArrayItem("program")]
         public List<Program> Programs { get; set; }
         [XmlArray("profiles")]
         [XmlArrayItem("profile")]
         public List<Profile> Profiles { get; set; }
+        [XmlElement("userSettings")]
+        public Settings UserSettings { get; set; }
 
         public Configuration()
         {
             Profiles = new List<Profile>();
             Programs = new List<Program>();
+            UserSettings = new Settings();
         }
     }
 }

@@ -67,6 +67,7 @@
             // 
             // clbPrograms
             // 
+            this.clbPrograms.CheckOnClick = true;
             this.clbPrograms.FormattingEnabled = true;
             this.clbPrograms.Location = new System.Drawing.Point(13, 13);
             this.clbPrograms.Name = "clbPrograms";
@@ -80,6 +81,7 @@
             this.cbProfiles.Name = "cbProfiles";
             this.cbProfiles.Size = new System.Drawing.Size(237, 21);
             this.cbProfiles.TabIndex = 5;
+            this.cbProfiles.SelectedValueChanged += new System.EventHandler(this.cbProfiles_SelectedValueChanged);
             // 
             // Form1
             // 
@@ -93,6 +95,7 @@
             this.Controls.Add(this.btnAll);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.ResumeLayout(false);
 
         }

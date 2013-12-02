@@ -17,11 +17,13 @@ namespace StartupSelector
     public partial class Form1 : Form
     {
         private Configuration _configuration;
+        private string _configFile;
 
         public Form1()
         {
             InitializeComponent();
-            LoadConfiguration(ConfigurationManager.AppSettings["configFile"]);
+            _configFile = ConfigurationManager.AppSettings["configFile"];
+            LoadConfiguration(_configFile);
         }
 
         private void LoadConfiguration(string configurationFile)
@@ -43,14 +45,21 @@ namespace StartupSelector
 
             var activeProfile = _configuration.Profiles.FirstOrDefault() ?? new Configuration.Profile();
 
-            foreach (var program in _configuration.Programs)
+            if (_configuration.UserSettings != null && !string.IsNullOrEmpty(_configuration.UserSettings.SelectedProfile))
             {
-                var state = (activeProfile.Active.Contains(program.Name))
-                                ? CheckState.Checked
-                                : CheckState.Unchecked;
-
-                clbPrograms.Items.Add(program.Name, state);
+                var selectedProfile =
+                    _configuration.Profiles.SingleOrDefault(p => p.Name == _configuration.UserSettings.SelectedProfile);
+                if (selectedProfile != null)
+                {
+                    activeProfile = selectedProfile;
+                }
             }
+
+            foreach (var profile in _configuration.Profiles)
+            {
+                cbProfiles.Items.Add(profile.Name);
+            }
+            cbProfiles.SelectedItem = activeProfile.Name ?? "";
         }
 
         private void btnSelected_Click(object sender, EventArgs e)
@@ -99,6 +108,36 @@ namespace StartupSelector
         private IEnumerable<Configuration.Program> GetAllPrograms()
         {
             return _configuration.Programs;
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SaveConfiguration(_configFile);
+        }
+
+        private void SaveConfiguration(string configurationFile)
+        {
+            var xml = Serializer.SerializeXml(_configuration);
+            File.WriteAllText(configurationFile, xml);
+        }
+
+        private void cbProfiles_SelectedValueChanged(object sender, EventArgs e)
+        {
+            var selectedProfileName = ((ComboBox) sender).SelectedItem;
+            var selectedProfile = _configuration.Profiles.SingleOrDefault(p => p.Name == selectedProfileName);
+            if (selectedProfile != null)
+            {
+                clbPrograms.Items.Clear();
+                foreach (var program in _configuration.Programs)
+                {
+                    var state = (selectedProfile.Active.Contains(program.Name))
+                                    ? CheckState.Checked
+                                    : CheckState.Unchecked;
+
+                    clbPrograms.Items.Add(program.Name, state);
+                }
+                _configuration.UserSettings.SelectedProfile = selectedProfile.Name;
+            }
         }
     }
 }
