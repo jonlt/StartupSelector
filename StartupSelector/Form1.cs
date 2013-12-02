@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -20,9 +21,14 @@ namespace StartupSelector
         public Form1()
         {
             InitializeComponent();
+            LoadConfiguration(ConfigurationManager.AppSettings["configFile"]);
+        }
+
+        private void LoadConfiguration(string configurationFile)
+        {
             try
             {
-                var configFile = ConfigurationManager.AppSettings["configFile"];
+                var configFile = configurationFile;
                 var xml = File.ReadAllText(configFile);
                 _configuration = Serializer.DeserializeXml<Configuration>(xml);
             }
@@ -45,6 +51,46 @@ namespace StartupSelector
 
                 clbPrograms.Items.Add(program.Name, state);
             }
+        }
+
+        private void btnSelected_Click(object sender, EventArgs e)
+        {
+            foreach (var item in clbPrograms.CheckedItems)
+            {
+                var programName = item.ToString();
+                var program = _configuration.Programs.SingleOrDefault(p => p.Name == programName);
+                if (program != null)
+                {
+                    StartProgram(program);
+                }
+            }
+            
+            Close();
+        }
+
+        private void btnAll_Click(object sender, EventArgs e)
+        {
+            foreach (var item in clbPrograms.Items)
+            {
+                var programName = item.ToString();
+                var program = _configuration.Programs.SingleOrDefault(p => p.Name == programName);
+                if (program != null)
+                {
+                    StartProgram(program);
+                }
+            }
+
+            Close();
+        }
+
+        private void btnNone_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void StartProgram(Configuration.Program program)
+        {
+            Process.Start(program.Path);
         }
     }
 }

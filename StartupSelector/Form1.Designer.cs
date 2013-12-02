@@ -42,6 +42,7 @@
             this.btnAll.TabIndex = 1;
             this.btnAll.Text = "All";
             this.btnAll.UseVisualStyleBackColor = true;
+            this.btnAll.Click += new System.EventHandler(this.btnAll_Click);
             // 
             // btnNone
             // 
@@ -51,6 +52,7 @@
             this.btnNone.TabIndex = 2;
             this.btnNone.Text = "None";
             this.btnNone.UseVisualStyleBackColor = true;
+            this.btnNone.Click += new System.EventHandler(this.btnNone_Click);
             // 
             // btnSelected
             // 
@@ -60,6 +62,7 @@
             this.btnSelected.TabIndex = 3;
             this.btnSelected.Text = "Selected";
             this.btnSelected.UseVisualStyleBackColor = true;
+            this.btnSelected.Click += new System.EventHandler(this.btnSelected_Click);
             // 
             // clbPrograms
             // 
