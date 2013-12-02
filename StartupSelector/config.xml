@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<config>
+  <programs>
+    <program>
+      <name>Skype</name>
+      <path><![CDATA[C:\Program Files (x86)\Skype\Phone\Skype.exe]]></path>
+    </program>
+    <program>
+      <name>Lync</name>
+      <path><![CDATA[C:\Program Files (x86)\Microsoft Office\Office15\lync.exe]]></path>
+    </program>
+    <program>
+      <name>Dropbox</name>
+      <path><![CDATA[C:\Users\jlt\AppData\Roaming\Dropbox\bin\Dropbox.exe]]></path>
+    </program>
+    <program>
+      <name>KeePass</name>
+      <path><![CDATA[D:\Dropbox\keepass\KeePass.exe]]></path>
+    </program>    
+  </programs>
+  <profiles>
+    <profile>
+      <name>Default</name>
+      <active>
+        <name>Skype</name>
+        <name>Lync</name>
+        <name>Dropbox</name>
+      </active>
+    </profile>
+    <profile>
+      <name>Work</name>
+      <active>
+        <name>Skype</name>
+        <name>Lync</name>
+        <name>Sropbox</name>
+      </active>
+    </profile>
+    <profile>
+      <name>Home</name>
+      <active>
+        <name>Skype</name>
+        <name>Dropbox</name>
+      </active>
+    </profile>
+  </profiles>
+</config>
