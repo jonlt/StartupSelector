@@ -10,117 +10,85 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using StartupSelector.Helpers;
 
 namespace StartupSelector
 {
     public partial class Startup : Form
     {
-        private Configuration _configuration;
-        private readonly string _configFile = ConfigurationManager.AppSettings["configFile"];
+        private readonly Dictionary<Keys, Button> _keybindings = new Dictionary<Keys, Button>();
+        private string _profilesPath = ConfigurationManager.AppSettings["profilesPath"];
 
         public Startup()
         {
             InitializeComponent();
-            LoadConfiguration(_configFile);
-            RenderConfiguration();
+
+            if (_profilesPath == null)
+            {
+                _profilesPath = "Profiles";
+            }
+
+            if (_profilesPath.EndsWith("/"))
+            {
+                _profilesPath = _profilesPath.Remove(_profilesPath.Length - 1);
+            }
+
+            CreateProfileButtons();
         }
 
-        private void LoadConfiguration(string configurationFile)
+        private void CreateProfileButtons()
         {
-            Configuration configuration;
-            try
-            {
-                var configFile = configurationFile;
-                var xml = File.ReadAllText(configFile);
-                configuration = Serializer.DeserializeXml<Configuration>(xml);
-            }
-            catch (FileNotFoundException fnfe)
-            {
-                configuration = new Configuration();
-            }
-            catch (Serializer.SerializationException se)
-            {
-                configuration = new Configuration();
-            }
-            _configuration = configuration;
-        }
 
-        private void RenderConfiguration()
-        {
-            clbPrograms.Items.Clear();
-            foreach (var program in _configuration.Programs)
-            {
-                var state = (program.Selected)
-                                ? CheckState.Checked
-                                : CheckState.Unchecked;
+            var dir = new DirectoryInfo(_profilesPath);
+            var dirs = dir.GetDirectories();
 
-                clbPrograms.Items.Add(program.Name ?? "", state);
+            var start = new Point(13, 13);
+            var size = new Size(239, 35);
+
+            var spacing = 6;
+
+            for (int i = 0; i < dirs.Count(); i++)
+            {
+                var currentDir = dirs[i];
+                var name = currentDir.Name;
+                var keyBinding = name.ToUpper()[0];
+
+                var button = new Button
+                    {
+                        Text = name, 
+                        Size = size, Location = new Point(start.X, start.Y),
+                    };
+
+                button.Click += ButtonOnClick;
+                _keybindings[(Keys)keyBinding] = button;
+                Controls.Add(button);
+                start.Y += size.Height + 6;
             }
         }
 
-        private void btnSelected_Click(object sender, EventArgs e)
+        private void ButtonOnClick(object sender, EventArgs eventArgs)
         {
-            foreach (var program in GetSelectedPrograms())
-            {
-                if (program != null)
-                {
-                    StartProgram(program);
-                }
-            }
-            
-            Close();
-        }
+            var button = (Button) sender;
+            var name = button.Text;
 
-        private void btnAll_Click(object sender, EventArgs e)
-        {
-            foreach (var program in GetAllPrograms())
+            var dir = new DirectoryInfo(_profilesPath + "/" + name);
+
+            foreach (var file in dir.GetFiles())
             {
-                if (program != null)
-                {
-                    StartProgram(program);
-                }
+                Process.Start(file.FullName);
             }
 
             Close();
         }
 
-        private void btnNone_Click(object sender, EventArgs e)
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            Close();
-        }
-
-        private void StartProgram(Configuration.Program program)
-        {
-            Process.Start(program.Path);
-        }
-
-        private IEnumerable<Configuration.Program> GetSelectedPrograms()
-        {
-            return clbPrograms.CheckedItems.OfType<string>()
-                              .Select(s => _configuration.Programs.SingleOrDefault(p => p.Name == s))
-                              .Where(p => p != null);
-        }
-
-        private IEnumerable<Configuration.Program> GetAllPrograms()
-        {
-            return _configuration.Programs;
-        }
-
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            SaveConfiguration(_configFile);
-        }
-
-        private void SaveConfiguration(string configurationFile)
-        {
-            foreach (var selectedProgram in GetSelectedPrograms())
+            if (_keybindings.ContainsKey(keyData))
             {
-                selectedProgram.Selected = true;
+                _keybindings[keyData].PerformClick();
             }
 
-            var xml = Serializer.SerializeXml(_configuration);
-            File.WriteAllText(configurationFile, xml, Encoding.UTF8);
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }
