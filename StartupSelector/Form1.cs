@@ -32,6 +32,11 @@ namespace StartupSelector
                 _profilesPath = _profilesPath.Remove(_profilesPath.Length - 1);
             }
 
+            if (!Directory.Exists(_profilesPath))
+            {
+                Directory.CreateDirectory(_profilesPath);
+            }
+
             CreateProfileButtons();
         }
 
