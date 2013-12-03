@@ -8,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -43,7 +44,8 @@ namespace StartupSelector
             var start = new Point(13, 13);
             var size = new Size(239, 35);
 
-            var spacing = 6;
+            var regex = new Regex("[A-Z]");
+
 
             for (int i = 0; i < dirs.Count(); i++)
             {
@@ -52,7 +54,7 @@ namespace StartupSelector
 
                 var button = new Button
                     {
-                        Text = "&" + name,
+                        Text = regex.Replace(name, "&$0", 1), // add mnemonic
                         Size = size,
                         Location = new Point(start.X, start.Y),
                         UseMnemonic = true,
