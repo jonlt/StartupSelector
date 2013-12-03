@@ -16,7 +16,7 @@ namespace StartupSelector
 {
     public partial class Startup : Form
     {
-        private string _profilesPath = ConfigurationManager.AppSettings["profilesPath"];
+        private readonly string _profilesPath = ConfigurationManager.AppSettings["profilesPath"];
 
         public Startup()
         {
