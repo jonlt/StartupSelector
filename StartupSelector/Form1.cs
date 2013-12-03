@@ -15,7 +15,6 @@ namespace StartupSelector
 {
     public partial class Startup : Form
     {
-        private readonly Dictionary<Keys, Button> _keybindings = new Dictionary<Keys, Button>();
         private string _profilesPath = ConfigurationManager.AppSettings["profilesPath"];
 
         public Startup()
@@ -50,16 +49,16 @@ namespace StartupSelector
             {
                 var currentDir = dirs[i];
                 var name = currentDir.Name;
-                var keyBinding = name.ToUpper()[0];
 
                 var button = new Button
                     {
-                        Text = name, 
-                        Size = size, Location = new Point(start.X, start.Y),
+                        Text = "&" + name,
+                        Size = size,
+                        Location = new Point(start.X, start.Y),
+                        UseMnemonic = true,
                     };
 
                 button.Click += ButtonOnClick;
-                _keybindings[(Keys)keyBinding] = button;
                 Controls.Add(button);
                 start.Y += size.Height + 6;
             }
@@ -68,7 +67,7 @@ namespace StartupSelector
         private void ButtonOnClick(object sender, EventArgs eventArgs)
         {
             var button = (Button) sender;
-            var name = button.Text;
+            var name = button.Text.Replace("&", "");
 
             var dir = new DirectoryInfo(_profilesPath + "/" + name);
 
@@ -79,16 +78,6 @@ namespace StartupSelector
 
             Close();
         }
-
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-            if (_keybindings.ContainsKey(keyData))
-            {
-                _keybindings[keyData].PerformClick();
-            }
-
-
-            return base.ProcessCmdKey(ref msg, keyData);
-        }
+            
     }
 }
