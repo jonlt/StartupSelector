@@ -80,7 +80,14 @@ namespace StartupSelector
 
             foreach (var file in dir.GetFiles())
             {
-                Process.Start(file.FullName);
+                try
+                {
+                    Process.Start(file.FullName);
+                }
+                catch (Exception e)
+                {
+                    
+                }
             }
 
             Close();
